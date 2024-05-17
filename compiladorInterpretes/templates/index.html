@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='styles.css')}}"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <title>Compilador</title>
+  </head>
+  <body>
+    <div class="canva borde box">
+      <div class="top">
+        <div class="seccion borde">
+          <textarea
+            class="fondoCodigo"
+            id="codigo"
+            rows="25"
+            cols="70"
+          ></textarea>
+        </div>
+        <div class="seccion borde fondoCodigo">
+          <div id="resultado"></div>
+        </div>
+      </div>
+      <!-- ---------- -->
+      <div class="bottom">
+        <div class="btns borde">
+          <button id="btnAnalisis" class="borde" onclick="analizar()">
+            Análisis Léxico
+          </button>
+          <button id="btnBorrar" class="borde" onclick="borrar()">
+            Borrar
+          </button>
+        </div>
+        <div class="btns borde"></div>
+      </div>
+    </div>
+  </body>
+</html>
