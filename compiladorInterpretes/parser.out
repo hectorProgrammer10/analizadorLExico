@@ -1,0 +1,255 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> for_loop
+Rule 1     for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+Rule 2     tipo -> RESERVADA DOT RESERVADA DOT RESERVADA
+Rule 3     statement -> tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON
+
+Terminals, with rules where they appear
+
+DIGITO               : 1 1 3
+DOT                  : 2 2
+EQ                   : 1
+ID                   : 1 1
+LBRACE               : 1
+LEQ                  : 1
+LPAREN               : 1 3
+PLUS                 : 1 1 3
+RBRACE               : 1
+RESERVADA            : 1 1 2 2 2
+RPAREN               : 1 3
+SEMICOLON            : 1 1 3
+STRING               : 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+for_loop             : 0
+statement            : 1
+tipo                 : 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . for_loop
+    (1) for_loop -> . RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    RESERVADA       shift and go to state 2
+
+    for_loop                       shift and go to state 1
+
+state 1
+
+    (0) S' -> for_loop .
+
+
+
+state 2
+
+    (1) for_loop -> RESERVADA . LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    LPAREN          shift and go to state 3
+
+
+state 3
+
+    (1) for_loop -> RESERVADA LPAREN . RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    RESERVADA       shift and go to state 4
+
+
+state 4
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA . EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    EQ              shift and go to state 5
+
+
+state 5
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ . DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    DIGITO          shift and go to state 6
+
+
+state 6
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO . SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    SEMICOLON       shift and go to state 7
+
+
+state 7
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON . ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    ID              shift and go to state 8
+
+
+state 8
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID . LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    LEQ             shift and go to state 9
+
+
+state 9
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ . DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    DIGITO          shift and go to state 10
+
+
+state 10
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO . SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    SEMICOLON       shift and go to state 11
+
+
+state 11
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON . ID PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    ID              shift and go to state 12
+
+
+state 12
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID . PLUS PLUS RPAREN LBRACE statement RBRACE
+
+    PLUS            shift and go to state 13
+
+
+state 13
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS . PLUS RPAREN LBRACE statement RBRACE
+
+    PLUS            shift and go to state 14
+
+
+state 14
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS . RPAREN LBRACE statement RBRACE
+
+    RPAREN          shift and go to state 15
+
+
+state 15
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN . LBRACE statement RBRACE
+
+    LBRACE          shift and go to state 16
+
+
+state 16
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE . statement RBRACE
+    (3) statement -> . tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON
+    (2) tipo -> . RESERVADA DOT RESERVADA DOT RESERVADA
+
+    RESERVADA       shift and go to state 17
+
+    statement                      shift and go to state 18
+    tipo                           shift and go to state 19
+
+state 17
+
+    (2) tipo -> RESERVADA . DOT RESERVADA DOT RESERVADA
+
+    DOT             shift and go to state 20
+
+
+state 18
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement . RBRACE
+
+    RBRACE          shift and go to state 21
+
+
+state 19
+
+    (3) statement -> tipo . LPAREN STRING PLUS DIGITO RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 22
+
+
+state 20
+
+    (2) tipo -> RESERVADA DOT . RESERVADA DOT RESERVADA
+
+    RESERVADA       shift and go to state 23
+
+
+state 21
+
+    (1) for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE .
+
+    $end            reduce using rule 1 (for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE .)
+
+
+state 22
+
+    (3) statement -> tipo LPAREN . STRING PLUS DIGITO RPAREN SEMICOLON
+
+    STRING          shift and go to state 24
+
+
+state 23
+
+    (2) tipo -> RESERVADA DOT RESERVADA . DOT RESERVADA
+
+    DOT             shift and go to state 25
+
+
+state 24
+
+    (3) statement -> tipo LPAREN STRING . PLUS DIGITO RPAREN SEMICOLON
+
+    PLUS            shift and go to state 26
+
+
+state 25
+
+    (2) tipo -> RESERVADA DOT RESERVADA DOT . RESERVADA
+
+    RESERVADA       shift and go to state 27
+
+
+state 26
+
+    (3) statement -> tipo LPAREN STRING PLUS . DIGITO RPAREN SEMICOLON
+
+    DIGITO          shift and go to state 28
+
+
+state 27
+
+    (2) tipo -> RESERVADA DOT RESERVADA DOT RESERVADA .
+
+    LPAREN          reduce using rule 2 (tipo -> RESERVADA DOT RESERVADA DOT RESERVADA .)
+
+
+state 28
+
+    (3) statement -> tipo LPAREN STRING PLUS DIGITO . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 29
+
+
+state 29
+
+    (3) statement -> tipo LPAREN STRING PLUS DIGITO RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 30
+
+
+state 30
+
+    (3) statement -> tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 3 (statement -> tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON .)
+

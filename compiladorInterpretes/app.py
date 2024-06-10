@@ -1,48 +1,75 @@
 from flask import Flask, render_template, request, jsonify
-from ply import lex
+from ply import lex, yacc
+
 app = Flask(__name__)
 
-# Lista de palabras reservadas válidas
-reserved_keywords = {'programa', 'int', 'read', 'printf', 'end'}
 # Lista de palabras reservadas
 reserved = {
-    'programa': 'RESERVADA',
+    'if': 'RESERVADA',
+    'else': 'RESERVADA',
+    'elif': 'RESERVADA',
+    'while': 'RESERVADA',
+    'for': 'RESERVADA',
+    'in': 'RESERVADA',
+    'break': 'RESERVADA',
+    'continue': 'RESERVADA',
+    'def': 'RESERVADA',
+    'return': 'RESERVADA',
+    'import': 'RESERVADA',
+    'from': 'RESERVADA',
+    'as': 'RESERVADA',
+    'class': 'RESERVADA',
+    'try': 'RESERVADA',
+    'except': 'RESERVADA',
+    'finally': 'RESERVADA',
+    'with': 'RESERVADA',
+    'lambda': 'RESERVADA',
+    'yield': 'RESERVADA',
     'int': 'RESERVADA',
-    'read': 'RESERVADA',
-    'printf': 'RESERVADA',
-    'end': 'RESERVADA'
+    'system': 'RESERVADA',
+    'out': 'RESERVADA',
+    'println': 'RESERVADA'
 }
-
-
-def is_similar_to_reserved(word):
-    for keyword in reserved_keywords:
-        if keyword.startswith(word):
-            return True
-    return False
-
 
 # Lista de tokens
 tokens = [
-    'ID',  # Identificador
     'LPAREN',  # (
     'RPAREN',  # )
-    'SIM',
-    'ERROR'
+    'LBRACE',  # {
+    'RBRACE',  # }
+    'SEMICOLON',  # ;
+    'PLUS',  # +
+    'EQ',  # =
+    'LEQ',  # <=
+    'DOT',  # .
+    'STRING',  # "..."
+    'ID',  # Identificadores
+    'DIGITO'
 ] + list(reserved.values())
 
-# Expresiones regulares para tokens
+# Expresiones regulares para tokens simples
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_SIM = r'[;+\-/*=]'
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
+t_SEMICOLON = r';'
+t_PLUS = r'[\+\-]'
+t_EQ = r'='
+t_LEQ = r'<='
+t_DOT = r'\.'
+t_STRING = r'\".*?\"'
+
+
+def t_DIGITO(t):
+    r'\d+'
+    t.type = 'DIGITO'
+    return t
 
 
 def t_ID(t):
-    r'[a-zA-Z]+'
-    # Verificar si es una palabra reservada similar a una válida
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
     if t.value in reserved:
         t.type = reserved[t.value]
-    elif is_similar_to_reserved(t.value):
-        t.type = 'ERROR'
     else:
         t.type = 'ID'
     return t
@@ -61,7 +88,41 @@ def t_error(t):
 
 # Crear un objeto lexer
 lexer = lex.lex()
-app = Flask(__name__)
+
+# Definir la gramática para el analizador sintáctico
+
+
+# Definir la gramática para el analizador sintáctico
+def p_for_loop(p):
+    '''for_loop : RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE'''
+    p[0] = "Correcto"
+
+
+def p_tipo(p):
+    '''tipo : RESERVADA DOT RESERVADA DOT RESERVADA '''
+    p[0] = p[1]
+
+
+def p_statement(p):
+    '''statement : tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON'''
+    p[0] = "Correcto"
+
+
+# Variable para almacenar el token donde ocurre el error
+syntax_error_token = None
+
+
+def p_error(p):
+    global syntax_error_token
+    syntax_error_token = p
+    if p:
+        print(f'Error de sintaxis en {p.value} en la posición {p.lexpos}')
+    else:
+        print('Error de sintaxis en EOF')
+
+
+# Crear un objeto parser
+parser = yacc.yacc()
 
 
 @app.route('/')
@@ -71,7 +132,7 @@ def index():
 
 @app.route('/analizar', methods=['POST'])
 def analizar():
-    datos_recibidos = request.json
+    datos_recibidos = request.json['codigo']
     tokens_analizados = []
 
     # Configurar el lexer con los datos recibidos
@@ -82,6 +143,25 @@ def analizar():
         tokens_analizados.append({'valor': token.value, 'tipo': token.type})
 
     return jsonify(tokens_analizados)
+
+
+@app.route('/analizarSintactico', methods=['POST'])
+def analizar_sintactico():
+    global syntax_error_token
+    syntax_error_token = None
+
+    datos_recibidos = request.json['codigo']
+    result = parser.parse(datos_recibidos)
+
+    if result == "Correcto":
+        return jsonify({'resultado': 'La estructura for es correcta'})
+    else:
+        error_info = {
+            'resultado': 'Error en la estructura for',
+            'token': syntax_error_token.value if syntax_error_token else None,
+            'posicion': syntax_error_token.lexpos if syntax_error_token else None
+        }
+        return jsonify(error_info)
 
 
 if __name__ == '__main__':

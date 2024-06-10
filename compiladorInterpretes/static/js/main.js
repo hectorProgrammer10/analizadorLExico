@@ -10,7 +10,7 @@ function analizar() {
     url: "/analizar", // Esta es la ruta de Flask que manejará la solicitud
     type: "POST",
     contentType: "application/json",
-    data: JSON.stringify(codigo),
+    data: JSON.stringify({ codigo: codigo }),
     success: function (response) {
       // Iterar sobre la lista de objetos
       response.forEach(function (obj) {
@@ -99,7 +99,39 @@ function imprimir(resultado) {
 function borrar() {
   let codigo = document.getElementById("codigo");
   let div = document.getElementById("resultado");
+  let resultadoSintactico = document.getElementById("resultadoSintactico");
   codigo.value = " ";
   div.innerHTML = " ";
+  resultadoSintactico.innerHTML = " ";
   contenedor = [];
+}
+
+// ------
+
+function analisisSintactico() {
+  let codigo = document.getElementById("codigo").value;
+  //analizarSintactico
+  $.ajax({
+    url: "/analizarSintactico", // Esta es la ruta de Flask que manejará la solicitud
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ codigo: codigo }),
+    success: function (response) {
+      console.log(response);
+      imprimirSintactico(response);
+    },
+    // Esta función se ejecutará si hay un error en la solicitud
+    error: function (error) {
+      console.error("Error en la solicitud:", error);
+    },
+  });
+}
+
+function imprimirSintactico(resultado) {
+  let resultadoSintactico = document.getElementById("resultadoSintactico");
+  if (resultado.resultado == "Error en la estructura for") {
+    resultadoSintactico.innerHTML = `${resultado.resultado}<br>posicion : ${resultado.posicion}<br>token : ' ${resultado.token} '`;
+  } else {
+    resultadoSintactico.innerHTML = `${resultado.resultado}`;
+  }
 }

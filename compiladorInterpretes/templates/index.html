@@ -21,6 +21,7 @@
             id="codigo"
             rows="25"
             cols="70"
+            placeholder="texto ..."
           ></textarea>
         </div>
         <div class="seccion borde fondoCodigo">
@@ -29,15 +30,28 @@
       </div>
       <!-- ---------- -->
       <div class="bottom">
-        <div class="btns borde">
-          <button id="btnAnalisis" class="borde" onclick="analizar()">
-            Análisis Léxico
-          </button>
-          <button id="btnBorrar" class="borde" onclick="borrar()">
-            Borrar
-          </button>
+        <div class="buttons">
+          <div class="btns borde">
+            <button id="btnAnalisis" class="borde" onclick="analizar()">
+              Análisis Léxico
+            </button>
+            <button id="btnBorrar" class="borde" onclick="borrar()">
+              Borrar
+            </button>
+          </div>
+          <div class="btns">
+            <button
+              id="btnSintactico"
+              class="borde"
+              onclick="analisisSintactico()"
+            >
+              Análisis Sintactico
+            </button>
+          </div>
         </div>
-        <div class="btns borde"></div>
+        <div class="seccion borde fondoCodigo">
+          <div id="resultadoSintactico"></div>
+        </div>
       </div>
     </div>
   </body>

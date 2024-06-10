@@ -27,8 +27,8 @@ button:hover{
   background-color: rgba(50, 50, 50, 0.2);
 }
 .canva{
-  height: 70%;
-  width: 55%;
+  height: 50rem;
+  width: 80rem;
   padding: 2%;
   display: flex;
   flex-direction: column;
@@ -62,65 +62,68 @@ button:hover{
       background-color: rgba(200, 200, 200, 0.2);
     }
 
-    #resultado{
+    #resultado, #resultadoSintactico{
       height: 96%;
       width: 96%;
       padding: 2%;
       overflow: auto;
     }
 .bottom{
-  height: 16%;
+  height: 36%;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
-  .btns{
-    height: 90%;
+  .buttons{
     width: 48%;
+    height: 90%;
+  
+  }
+  .btns{
+    height: 50%;
+    width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     border-left: none;
     border-right: none;
     border-bottom: none;
   }
     #btnAnalisis{
-      height: 50%;
-      width: 40%;
+      height: 45%;
+      width: 45%;
     }
     #btnBorrar{
-      height: 50%;
-      width: 30%;
+      height: 45%;
+      width: 45%;
+    }
+    #btnSintactico{
+      height: 45%;
+      width: 45%;
     }
 
-    .mi-tabla {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.8rem;
-      border: 1px solid #dddddd;
-    }
-    
-    .mi-tabla th{
-      border: 1px solid #dddddd;
-      padding: 8px;
-      text-align: center;
-    }
-    .mi-tabla td {
-      border-right: 1px solid #dddddd;
-      padding: 8px;
-      text-align: center;
-    }
-    
-    .mi-tabla th {
-      background-color: #f2f2f2;
-    }
-    
-    .mi-tabla tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    
-    .mi-tabla tr:hover {
-      background-color: #ddd;
-    }
+.mi-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.mi-tabla th, .mi-tabla td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.mi-tabla th {
+  background-color: #f2f2f2;
+}
+
+.mi-tabla tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.mi-tabla tr:hover {
+  background-color: #ddd;
+}
