@@ -5,30 +5,38 @@ app = Flask(__name__)
 
 # Lista de palabras reservadas
 reserved = {
-    'if': 'RESERVADA',
-    'else': 'RESERVADA',
-    'elif': 'RESERVADA',
-    'while': 'RESERVADA',
-    'for': 'RESERVADA',
-    'in': 'RESERVADA',
-    'break': 'RESERVADA',
-    'continue': 'RESERVADA',
+    # 'if': 'RESERVADA',
+    # 'else': 'RESERVADA',
+    # 'elif': 'RESERVADA',
+    # 'while': 'RESERVADA',
+    # 'for': 'RESERVADA',
+    # 'in': 'RESERVADA',
+    # 'break': 'RESERVADA',
+    # 'continue': 'RESERVADA',
+    # 'def': 'RESERVADA',
+    # 'return': 'RESERVADA',
+    # 'import': 'RESERVADA',
+    # 'from': 'RESERVADA',
+    # 'as': 'RESERVADA',
+    # 'class': 'RESERVADA',
+    # 'try': 'RESERVADA',
+    # 'except': 'RESERVADA',
+    # 'finally': 'RESERVADA',
+    # 'with': 'RESERVADA',
+    # 'lambda': 'RESERVADA',
+    # 'yield': 'RESERVADA',
+    # 'int': 'RESERVADA',
+    # 'system': 'RESERVADA',
+    # 'out': 'RESERVADA',
+    # 'println': 'RESERVADA'
+    'object': 'RESERVADA',
     'def': 'RESERVADA',
-    'return': 'RESERVADA',
-    'import': 'RESERVADA',
-    'from': 'RESERVADA',
-    'as': 'RESERVADA',
-    'class': 'RESERVADA',
-    'try': 'RESERVADA',
-    'except': 'RESERVADA',
-    'finally': 'RESERVADA',
-    'with': 'RESERVADA',
-    'lambda': 'RESERVADA',
-    'yield': 'RESERVADA',
-    'int': 'RESERVADA',
-    'system': 'RESERVADA',
-    'out': 'RESERVADA',
-    'println': 'RESERVADA'
+    'main': 'RESERVADA',
+    'Array': 'RESERVADA',
+    'String': 'RESERVADA',
+    'Unit': 'RESERVADA',
+    'println': 'RESERVADA',
+    'args': 'RESERVADA',
 }
 
 # Lista de tokens
@@ -41,10 +49,12 @@ tokens = [
     'PLUS',  # +
     'EQ',  # =
     'LEQ',  # <=
-    'DOT',  # .
+    'DOT',  # :
     'STRING',  # "..."
     'ID',  # Identificadores
-    'DIGITO'
+    'DIGITO',
+    'LBRACKET',  # [
+    'RBRACKET'  # ]
 ] + list(reserved.values())
 
 # Expresiones regulares para tokens simples
@@ -56,8 +66,10 @@ t_SEMICOLON = r';'
 t_PLUS = r'[\+\-]'
 t_EQ = r'='
 t_LEQ = r'<='
-t_DOT = r'\.'
+t_DOT = r'\:'
 t_STRING = r'\".*?\"'
+t_LBRACKET = r'\['
+t_RBRACKET = r'\]'
 
 
 def t_DIGITO(t):
@@ -94,7 +106,7 @@ lexer = lex.lex()
 
 # Definir la gramática para el analizador sintáctico
 def p_for_loop(p):
-    '''for_loop : RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE'''
+    '''for_loop : RESERVADA ID LBRACE RESERVADA RESERVADA LPAREN RESERVADA DOT RESERVADA LBRACKET RESERVADA RBRACKET RPAREN DOT RESERVADA EQ statement RBRACE'''
     p[0] = "Correcto"
 
 
@@ -104,7 +116,7 @@ def p_tipo(p):
 
 
 def p_statement(p):
-    '''statement : tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON'''
+    '''statement : LBRACE RESERVADA LPAREN STRING RPAREN SEMICOLON RBRACE'''
     p[0] = "Correcto"
 
 
@@ -154,10 +166,10 @@ def analizar_sintactico():
     result = parser.parse(datos_recibidos)
 
     if result == "Correcto":
-        return jsonify({'resultado': 'La estructura for es correcta'})
+        return jsonify({'resultado': 'La estructura es correcta'})
     else:
         error_info = {
-            'resultado': 'Error en la estructura for',
+            'resultado': 'Error en la estructura',
             'token': syntax_error_token.value if syntax_error_token else None,
             'posicion': syntax_error_token.lexpos if syntax_error_token else None
         }

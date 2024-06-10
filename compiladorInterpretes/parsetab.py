@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIGITO DOT EQ ID LBRACE LEQ LPAREN PLUS RBRACE RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RPAREN SEMICOLON STRINGfor_loop : RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACEtipo : RESERVADA DOT RESERVADA DOT RESERVADA statement : tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON'
+_lr_signature = 'DIGITO DOT EQ ID LBRACE LBRACKET LEQ LPAREN PLUS RBRACE RBRACKET RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RPAREN SEMICOLON STRINGfor_loop : RESERVADA ID LBRACE RESERVADA RESERVADA LPAREN RESERVADA DOT RESERVADA LBRACKET RESERVADA RBRACKET RPAREN DOT RESERVADA EQ statement RBRACEtipo : RESERVADA DOT RESERVADA DOT RESERVADA statement : LBRACE RESERVADA LPAREN STRING RPAREN SEMICOLON RBRACE'
     
-_lr_action_items = {'RESERVADA':([0,3,16,20,25,],[2,4,17,23,27,]),'$end':([1,21,],[0,-1,]),'LPAREN':([2,19,27,],[3,22,-2,]),'EQ':([4,],[5,]),'DIGITO':([5,9,26,],[6,10,28,]),'SEMICOLON':([6,10,29,],[7,11,30,]),'ID':([7,11,],[8,12,]),'LEQ':([8,],[9,]),'PLUS':([12,13,24,],[13,14,26,]),'RPAREN':([14,28,],[15,29,]),'LBRACE':([15,],[16,]),'DOT':([17,23,],[20,25,]),'RBRACE':([18,30,],[21,-3,]),'STRING':([22,],[24,]),}
+_lr_action_items = {'RESERVADA':([0,4,5,7,9,11,15,18,],[2,5,6,8,10,12,16,20,]),'$end':([1,21,],[0,-1,]),'ID':([2,],[3,]),'LBRACE':([3,17,],[4,18,]),'LPAREN':([6,20,],[7,22,]),'DOT':([8,14,],[9,15,]),'LBRACKET':([10,],[11,]),'RBRACKET':([12,],[13,]),'RPAREN':([13,23,],[14,24,]),'EQ':([16,],[17,]),'RBRACE':([19,25,26,],[21,26,-3,]),'STRING':([22,],[23,]),'SEMICOLON':([24,],[25,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'for_loop':([0,],[1,]),'statement':([16,],[18,]),'tipo':([16,],[19,]),}
+_lr_goto_items = {'for_loop':([0,],[1,]),'statement':([17,],[19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,7 +27,7 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> for_loop","S'",1,None,None,None),
-  ('for_loop -> RESERVADA LPAREN RESERVADA EQ DIGITO SEMICOLON ID LEQ DIGITO SEMICOLON ID PLUS PLUS RPAREN LBRACE statement RBRACE','for_loop',17,'p_for_loop','app.py',97),
-  ('tipo -> RESERVADA DOT RESERVADA DOT RESERVADA','tipo',5,'p_tipo','app.py',102),
-  ('statement -> tipo LPAREN STRING PLUS DIGITO RPAREN SEMICOLON','statement',7,'p_statement','app.py',107),
+  ('for_loop -> RESERVADA ID LBRACE RESERVADA RESERVADA LPAREN RESERVADA DOT RESERVADA LBRACKET RESERVADA RBRACKET RPAREN DOT RESERVADA EQ statement RBRACE','for_loop',18,'p_for_loop','app.py',109),
+  ('tipo -> RESERVADA DOT RESERVADA DOT RESERVADA','tipo',5,'p_tipo','app.py',114),
+  ('statement -> LBRACE RESERVADA LPAREN STRING RPAREN SEMICOLON RBRACE','statement',7,'p_statement','app.py',119),
 ]
