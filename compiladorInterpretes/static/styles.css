@@ -5,35 +5,44 @@
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2);
 }
 body{
-  height: 60rem;
+  height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(50, 50, 50, 0.1);
   margin: 0;
+  background-color: #212121;
+  color: white;
 }
 button{
   transition: 50ms;
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
+  background-color: #33373B;
+  color: rgba(200, 200, 200, 0.8);
+  height: 45% !important;
+  padding-bottom: 1rem !important;
 }
 button:active{
   transform: scale(0.6);
 }
 button:hover{
   cursor: pointer;
-  background-color: rgba(50, 50, 50, 0.2);
+  background-color: rgba(250, 250, 250, 0.2);
 }
 .canva{
-  height: 50rem;
+  height: 65%;
   width: 80rem;
   padding: 2%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: white;
+  background-color: #21252B;
+  overflow: auto;
+  border: 1px solid rgba(200, 200, 200, 0.2);
+  box-shadow: 1px 1px 20px 8px rgba(0, 0, 0, 0.2);
 }
 
 .top{
@@ -56,10 +65,14 @@ button:hover{
       font-size: 1.1rem;
     }
     #codigo:focus{ 
-      background-color: rgba(200, 200, 200, 0.2);
+      background-color: rgba(200, 200, 200, 0.1);
+    }
+    .fondoCodigo{
+      background-color: #282C34;
+      color: white;
     }
     .fondoCodigo:hover{ 
-      background-color: rgba(200, 200, 200, 0.2);
+      background-color: rgba(200, 200, 200, 0.1);
     }
 
     #resultado, #resultadoSintactico{
@@ -67,6 +80,10 @@ button:hover{
       width: 96%;
       padding: 2%;
       overflow: auto;
+    }
+    #resultado{
+      color: black !important;
+      /* background-color: white !important; */
     }
 .bottom{
   height: 36%;
@@ -103,6 +120,19 @@ button:hover{
       height: 45%;
       width: 45%;
     }
+    .btnAnalisis{
+      height: 45%;
+      width: 45%;
+    }
+
+    #resultadoSemantico{
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      padding-left: 1rem;
+      
+    }
+
 
 .mi-tabla {
   width: 100%;
@@ -114,6 +144,7 @@ button:hover{
   border: 1px solid #dddddd;
   padding: 8px;
   text-align: left;
+  background-color: rgba(200, 200, 200, 0.8);
 }
 
 .mi-tabla th {
@@ -125,5 +156,6 @@ button:hover{
 }
 
 .mi-tabla tr:hover {
-  background-color: #ddd;
+  background-color: rgba(0, 0, 0, 0.9) !important;
+
 }

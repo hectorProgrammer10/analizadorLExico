@@ -135,3 +135,27 @@ function imprimirSintactico(resultado) {
     resultadoSintactico.innerHTML = `${resultado.resultado}`;
   }
 }
+
+// -------
+function analisisSemantico() {
+  let codigo = document.getElementById("codigo").value;
+  //analizarSintactico
+  $.ajax({
+    url: "/analizarSemantico", // Esta es la ruta de Flask que manejará la solicitud
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ codigo: codigo }),
+    success: function (response) {
+      console.log(response);
+      imprimirSemantico(response);
+    },
+    // Esta función se ejecutará si hay un error en la solicitud
+    error: function (error) {
+      console.error("Error en la solicitud:", error);
+    },
+  });
+}
+function imprimirSemantico(resultado) {
+  let resultadoS = document.getElementById("resultadoSemantico");
+  resultadoS.innerHTML = `${resultado.resultado}`;
+}

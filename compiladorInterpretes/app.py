@@ -5,38 +5,32 @@ app = Flask(__name__)
 
 # Lista de palabras reservadas
 reserved = {
-    # 'if': 'RESERVADA',
-    # 'else': 'RESERVADA',
-    # 'elif': 'RESERVADA',
-    # 'while': 'RESERVADA',
-    # 'for': 'RESERVADA',
-    # 'in': 'RESERVADA',
-    # 'break': 'RESERVADA',
-    # 'continue': 'RESERVADA',
-    # 'def': 'RESERVADA',
-    # 'return': 'RESERVADA',
-    # 'import': 'RESERVADA',
-    # 'from': 'RESERVADA',
-    # 'as': 'RESERVADA',
-    # 'class': 'RESERVADA',
-    # 'try': 'RESERVADA',
-    # 'except': 'RESERVADA',
-    # 'finally': 'RESERVADA',
-    # 'with': 'RESERVADA',
-    # 'lambda': 'RESERVADA',
-    # 'yield': 'RESERVADA',
-    # 'int': 'RESERVADA',
-    # 'system': 'RESERVADA',
-    # 'out': 'RESERVADA',
-    # 'println': 'RESERVADA'
-    'object': 'RESERVADA',
+    'if': 'RESERVADA',
+    'else': 'RESERVADA',
+    'elif': 'RESERVADA',
+    'while': 'RESERVADA',
+    'for': 'RESERVADA',
+    'in': 'RESERVADA',
+    'break': 'RESERVADA',
+    'continue': 'RESERVADA',
     'def': 'RESERVADA',
-    'main': 'RESERVADA',
-    'Array': 'RESERVADA',
-    'String': 'RESERVADA',
-    'Unit': 'RESERVADA',
+    'return': 'RESERVADA',
+    'import': 'RESERVADA',
+    'from': 'RESERVADA',
+    'as': 'RESERVADA',
+    'class': 'RESERVADA',
+    'try': 'RESERVADA',
+    'except': 'RESERVADA',
+    'finally': 'RESERVADA',
+    'with': 'RESERVADA',
+    'lambda': 'RESERVADA',
+    'yield': 'RESERVADA',
+    'int': 'RESERVADA',
+    'system': 'RESERVADA',
+    'out': 'RESERVADA',
     'println': 'RESERVADA',
-    'args': 'RESERVADA',
+    'char': 'RESERVADA',
+    'float': 'RESERVADA'
 }
 
 # Lista de tokens
@@ -46,15 +40,13 @@ tokens = [
     'LBRACE',  # {
     'RBRACE',  # }
     'SEMICOLON',  # ;
-    'PLUS',  # +
+    'PLUS',  # ++
     'EQ',  # =
     'LEQ',  # <=
-    'DOT',  # :
+    'DOT',  # .
     'STRING',  # "..."
     'ID',  # Identificadores
-    'DIGITO',
-    'LBRACKET',  # [
-    'RBRACKET'  # ]
+    'DIGITO'
 ] + list(reserved.values())
 
 # Expresiones regulares para tokens simples
@@ -63,13 +55,11 @@ t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_SEMICOLON = r';'
-t_PLUS = r'[\+\-]'
+t_PLUS = r'\+\+'
 t_EQ = r'='
 t_LEQ = r'<='
-t_DOT = r'\:'
+t_DOT = r'\.'
 t_STRING = r'\".*?\"'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
 
 
 def t_DIGITO(t):
@@ -104,19 +94,45 @@ lexer = lex.lex()
 # Definir la gramática para el analizador sintáctico
 
 
-# Definir la gramática para el analizador sintáctico
-def p_for_loop(p):
-    '''for_loop : RESERVADA ID LBRACE RESERVADA RESERVADA LPAREN RESERVADA DOT RESERVADA LBRACKET RESERVADA RBRACKET RPAREN DOT RESERVADA EQ statement RBRACE'''
+def p_program(p):
+    '''program : declaration for_loop
+               | for_loop'''
     p[0] = "Correcto"
 
 
+def p_declaration(p):
+    '''declaration : tipo ID SEMICOLON'''
+    p[0] = p[1]
+
+
+def p_for_loop(p):
+    '''for_loop : RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE'''
+    p[0] = "Correcto"
+
+
+def p_for_initialization(p):
+    '''for_initialization : tipo ID EQ DIGITO
+                          | ID EQ DIGITO'''
+    p[0] = p[1]
+
+
+def p_for_condition(p):
+    '''for_condition : ID LEQ DIGITO'''
+    p[0] = p[1]
+
+
+def p_for_increment(p):
+    '''for_increment : ID PLUS'''
+    p[0] = p[1]
+
+
 def p_tipo(p):
-    '''tipo : RESERVADA DOT RESERVADA DOT RESERVADA '''
+    '''tipo : RESERVADA'''
     p[0] = p[1]
 
 
 def p_statement(p):
-    '''statement : LBRACE RESERVADA LPAREN STRING RPAREN SEMICOLON RBRACE'''
+    '''statement : RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON'''
     p[0] = "Correcto"
 
 
@@ -135,6 +151,27 @@ def p_error(p):
 
 # Crear un objeto parser
 parser = yacc.yacc()
+
+# Función para realizar el análisis semántico
+
+
+def analizar_semantico(codigo):
+    lexer.input(codigo)
+    tipo_declarado = None
+    variable_declarada = None
+    tokens = []
+
+    for token in lexer:
+        tokens.append(token)
+        if token.type in ['char', 'int', 'float'] and not tipo_declarado:
+            tipo_declarado = token.type
+        if token.type == 'ID' and not variable_declarada:
+            variable_declarada = token.value
+
+    if tipo_declarado and variable_declarada:
+        return "Análisis semántico correcto"
+    else:
+        return "Análisis semántico incorrecto"
 
 
 @app.route('/')
@@ -166,14 +203,21 @@ def analizar_sintactico():
     result = parser.parse(datos_recibidos)
 
     if result == "Correcto":
-        return jsonify({'resultado': 'La estructura es correcta'})
+        return jsonify({'resultado': 'La estructura for es correcta'})
     else:
         error_info = {
-            'resultado': 'Error en la estructura',
+            'resultado': 'Error en la estructura for',
             'token': syntax_error_token.value if syntax_error_token else None,
             'posicion': syntax_error_token.lexpos if syntax_error_token else None
         }
         return jsonify(error_info)
+
+
+@app.route('/analizarSemantico', methods=['POST'])
+def analizar_semantico_route():
+    datos_recibidos = request.json['codigo']
+    resultado = analizar_semantico(datos_recibidos)
+    return jsonify({'resultado': resultado})
 
 
 if __name__ == '__main__':
