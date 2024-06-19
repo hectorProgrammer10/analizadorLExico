@@ -2,6 +2,9 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    CHAR
+    FLOAT
+    INT
     STRING
 
 Grammar
@@ -20,10 +23,13 @@ Rule 10    statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN S
 
 Terminals, with rules where they appear
 
+CHAR                 : 
 DIGITO               : 5 6 7
 DOT                  : 10 10
 EQ                   : 5 6
+FLOAT                : 
 ID                   : 3 5 6 7 8 10
+INT                  : 
 LBRACE               : 4
 LEQ                  : 7
 LPAREN               : 4 10

@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIGITO DOT EQ ID LBRACE LEQ LPAREN PLUS RBRACE RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RPAREN SEMICOLON STRINGprogram : declaration for_loop\n               | for_loopdeclaration : tipo ID SEMICOLONfor_loop : RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACEfor_initialization : tipo ID EQ DIGITO\n                          | ID EQ DIGITOfor_condition : ID LEQ DIGITOfor_increment : ID PLUStipo : RESERVADAstatement : RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON'
+_lr_signature = 'CHAR DIGITO DOT EQ FLOAT ID INT LBRACE LEQ LPAREN PLUS RBRACE RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RPAREN SEMICOLON STRINGprogram : declaration for_loop\n               | for_loopdeclaration : tipo ID SEMICOLONfor_loop : RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACEfor_initialization : tipo ID EQ DIGITO\n                          | ID EQ DIGITOfor_condition : ID LEQ DIGITOfor_increment : ID PLUStipo : RESERVADAstatement : RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON'
     
 _lr_action_items = {'RESERVADA':([0,2,9,10,30,33,36,],[5,7,11,-3,31,35,37,]),'$end':([1,3,6,34,],[0,-2,-1,-4,]),'ID':([4,5,9,11,13,15,22,38,],[8,-9,14,-9,16,19,26,39,]),'LPAREN':([5,7,37,],[9,9,38,]),'SEMICOLON':([8,12,18,21,24,27,40,],[10,15,22,-6,-5,-7,41,]),'EQ':([14,16,],[17,20,]),'DIGITO':([17,20,23,],[21,24,27,]),'LEQ':([19,],[23,]),'RPAREN':([25,29,39,],[28,-8,40,]),'PLUS':([26,],[29,]),'LBRACE':([28,],[30,]),'DOT':([31,35,],[33,36,]),'RBRACE':([32,41,],[34,-10,]),}
 
@@ -27,14 +27,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> declaration for_loop','program',2,'p_program','app.py',98),
-  ('program -> for_loop','program',1,'p_program','app.py',99),
-  ('declaration -> tipo ID SEMICOLON','declaration',3,'p_declaration','app.py',104),
-  ('for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE','for_loop',11,'p_for_loop','app.py',109),
-  ('for_initialization -> tipo ID EQ DIGITO','for_initialization',4,'p_for_initialization','app.py',114),
-  ('for_initialization -> ID EQ DIGITO','for_initialization',3,'p_for_initialization','app.py',115),
-  ('for_condition -> ID LEQ DIGITO','for_condition',3,'p_for_condition','app.py',120),
-  ('for_increment -> ID PLUS','for_increment',2,'p_for_increment','app.py',125),
-  ('tipo -> RESERVADA','tipo',1,'p_tipo','app.py',130),
-  ('statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON','statement',9,'p_statement','app.py',135),
+  ('program -> declaration for_loop','program',2,'p_program','app.py',105),
+  ('program -> for_loop','program',1,'p_program','app.py',106),
+  ('declaration -> tipo ID SEMICOLON','declaration',3,'p_declaration','app.py',111),
+  ('for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE','for_loop',11,'p_for_loop','app.py',116),
+  ('for_initialization -> tipo ID EQ DIGITO','for_initialization',4,'p_for_initialization','app.py',121),
+  ('for_initialization -> ID EQ DIGITO','for_initialization',3,'p_for_initialization','app.py',122),
+  ('for_condition -> ID LEQ DIGITO','for_condition',3,'p_for_condition','app.py',127),
+  ('for_increment -> ID PLUS','for_increment',2,'p_for_increment','app.py',132),
+  ('tipo -> RESERVADA','tipo',1,'p_tipo','app.py',137),
+  ('statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON','statement',9,'p_statement','app.py',142),
 ]

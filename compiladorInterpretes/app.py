@@ -3,7 +3,7 @@ from ply import lex, yacc
 
 app = Flask(__name__)
 
-# Lista de palabras reservadas
+# Lista de palabras reservadas y tipos
 reserved = {
     'if': 'RESERVADA',
     'else': 'RESERVADA',
@@ -25,12 +25,16 @@ reserved = {
     'with': 'RESERVADA',
     'lambda': 'RESERVADA',
     'yield': 'RESERVADA',
-    'int': 'RESERVADA',
     'system': 'RESERVADA',
     'out': 'RESERVADA',
-    'println': 'RESERVADA',
-    'char': 'RESERVADA',
-    'float': 'RESERVADA'
+    'println': 'RESERVADA'
+}
+
+# Lista de tipos de datos
+types = {
+    'int': 'INT',
+    'char': 'CHAR',
+    'float': 'FLOAT'
 }
 
 # Lista de tokens
@@ -47,7 +51,7 @@ tokens = [
     'STRING',  # "..."
     'ID',  # Identificadores
     'DIGITO'
-] + list(reserved.values())
+] + list(reserved.values()) + list(types.values())
 
 # Expresiones regulares para tokens simples
 t_LPAREN = r'\('
@@ -72,6 +76,8 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     if t.value in reserved:
         t.type = reserved[t.value]
+    elif t.value in types:
+        t.type = types[t.value]
     else:
         t.type = 'ID'
     return t
@@ -91,6 +97,7 @@ def t_error(t):
 # Crear un objeto lexer
 lexer = lex.lex()
 
+
 # Definir la gramática para el analizador sintáctico
 
 
@@ -102,7 +109,7 @@ def p_program(p):
 
 def p_declaration(p):
     '''declaration : tipo ID SEMICOLON'''
-    p[0] = p[1]
+    p[0] = (p[1], p[2])
 
 
 def p_for_loop(p):
@@ -113,7 +120,7 @@ def p_for_loop(p):
 def p_for_initialization(p):
     '''for_initialization : tipo ID EQ DIGITO
                           | ID EQ DIGITO'''
-    p[0] = p[1]
+    p[0] = (p[1], p[2]) if len(p) == 5 else (None, p[1])
 
 
 def p_for_condition(p):
@@ -159,16 +166,24 @@ def analizar_semantico(codigo):
     lexer.input(codigo)
     tipo_declarado = None
     variable_declarada = None
-    tokens = []
+    variable_utilizada = None
+    tokens = list(lexer)
 
-    for token in lexer:
-        tokens.append(token)
-        if token.type in ['char', 'int', 'float'] and not tipo_declarado:
+    for token in tokens:
+        # Añadimos esta línea para depuración
+        print(f'Token: {token.type}, Value: {token.value}')
+        if token.type in ['INT', 'CHAR', 'FLOAT'] and not tipo_declarado:
             tipo_declarado = token.type
         if token.type == 'ID' and not variable_declarada:
             variable_declarada = token.value
+        if token.type == 'ID' and variable_declarada and token.value == variable_declarada:
+            variable_utilizada = True
 
-    if tipo_declarado and variable_declarada:
+    print(f"Tipo declarado: {tipo_declarado}")
+    print(f"Variable declarada: {variable_declarada}")
+    print(f"Variable utilizada: {variable_utilizada}")
+
+    if tipo_declarado and variable_declarada and variable_utilizada:
         return "Análisis semántico correcto"
     else:
         return "Análisis semántico incorrecto"
