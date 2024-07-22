@@ -1,33 +1,25 @@
 from flask import Flask, render_template, request, jsonify
+from flask_socketio import SocketIO, emit
+import subprocess
+import threading
 from ply import lex, yacc
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
 # Lista de palabras reservadas y tipos
 reserved = {
-    'if': 'RESERVADA',
-    'else': 'RESERVADA',
-    'elif': 'RESERVADA',
-    'while': 'RESERVADA',
-    'for': 'RESERVADA',
-    'in': 'RESERVADA',
-    'break': 'RESERVADA',
-    'continue': 'RESERVADA',
-    'def': 'RESERVADA',
-    'return': 'RESERVADA',
-    'import': 'RESERVADA',
-    'from': 'RESERVADA',
-    'as': 'RESERVADA',
-    'class': 'RESERVADA',
-    'try': 'RESERVADA',
-    'except': 'RESERVADA',
-    'finally': 'RESERVADA',
-    'with': 'RESERVADA',
-    'lambda': 'RESERVADA',
-    'yield': 'RESERVADA',
-    'system': 'RESERVADA',
-    'out': 'RESERVADA',
-    'println': 'RESERVADA'
+    'cd': 'RESERVADA',
+    'ls': 'RESERVADA',
+    'pwd': 'RESERVADA',
+    'mkdir': 'RESERVADA',
+    'rm': 'RESERVADA',
+    'cp': 'RESERVADA',
+    'mv': 'RESERVADA',
+    'touch': 'RESERVADA',
+    'cat': 'RESERVADA',
+    'echo': 'RESERVADA',
 }
 
 # Lista de tipos de datos
@@ -39,31 +31,33 @@ types = {
 
 # Lista de tokens
 tokens = [
-    'LPAREN',  # (
-    'RPAREN',  # )
-    'LBRACE',  # {
-    'RBRACE',  # }
-    'SEMICOLON',  # ;
-    'PLUS',  # ++
-    'EQ',  # =
-    'LEQ',  # <=
+    'MNUS',  # (
+    'SL',
+    # 'RPAREN',  # )
+    # 'LBRACE',  # {
+    # 'RBRACE',  # }
+    # 'SEMICOLON',  # ;
+    # 'PLUS',  # ++
+    # 'EQ',  # =
+    # 'LEQ',  # <=
     'DOT',  # .
-    'STRING',  # "..."
+    # 'STRING',  # "..."
     'ID',  # Identificadores
-    'DIGITO'
+    # 'DIGITO'
 ] + list(reserved.values()) + list(types.values())
 
 # Expresiones regulares para tokens simples
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
-t_SEMICOLON = r';'
-t_PLUS = r'\+\+'
-t_EQ = r'='
-t_LEQ = r'<='
+t_MNUS = r'\-'
+t_SL = r'\/'
+# t_RPAREN = r'\)'
+# t_LBRACE = r'\{'
+# t_RBRACE = r'\}'
+# t_SEMICOLON = r';'
+# t_PLUS = r'\+\+'
+# t_EQ = r'='
+# t_LEQ = r'<='
 t_DOT = r'\.'
-t_STRING = r'\".*?\"'
+# t_STRING = r'\".*?\"'
 
 
 def t_DIGITO(t):
@@ -102,46 +96,43 @@ lexer = lex.lex()
 
 
 def p_program(p):
-    '''program : declaration for_loop
-               | for_loop'''
+    '''program : RESERVADA
+               | RESERVADA comando'''
     p[0] = "Correcto"
 
 
-def p_declaration(p):
-    '''declaration : tipo ID SEMICOLON'''
-    p[0] = (p[1], p[2])
+def p_comando(p):
+    '''comando : MNUS ID
+               | SL ID SL ID
+               | DOT DOT
+               | MNUS MNUS ID'''
+    p[0] = "correcto"
 
 
-def p_for_loop(p):
-    '''for_loop : RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE'''
-    p[0] = "Correcto"
+# def p_for_initialization(p):
+#     '''for_initialization : tipo ID EQ DIGITO
+#                           | ID EQ DIGITO'''
+#     p[0] = (p[1], p[2]) if len(p) == 5 else (None, p[1])
 
 
-def p_for_initialization(p):
-    '''for_initialization : tipo ID EQ DIGITO
-                          | ID EQ DIGITO'''
-    p[0] = (p[1], p[2]) if len(p) == 5 else (None, p[1])
+# def p_for_condition(p):
+#     '''for_condition : ID LEQ DIGITO'''
+#     p[0] = p[1]
 
 
-def p_for_condition(p):
-    '''for_condition : ID LEQ DIGITO'''
-    p[0] = p[1]
+# def p_for_increment(p):
+#     '''for_increment : ID PLUS'''
+#     p[0] = p[1]
 
 
-def p_for_increment(p):
-    '''for_increment : ID PLUS'''
-    p[0] = p[1]
+# def p_tipo(p):
+#     '''tipo : RESERVADA'''
+#     p[0] = p[1]
 
 
-def p_tipo(p):
-    '''tipo : RESERVADA'''
-    p[0] = p[1]
-
-
-def p_statement(p):
-    '''statement : RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON'''
-    p[0] = "Correcto"
-
+# def p_statement(p):
+#     '''statement : RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON'''
+#     p[0] = "Correcto"
 
 # Variable para almacenar el token donde ocurre el error
 syntax_error_token = None
@@ -196,6 +187,7 @@ def index():
 
 @app.route('/analizar', methods=['POST'])
 def analizar():
+
     datos_recibidos = request.json['codigo']
     tokens_analizados = []
 
@@ -205,12 +197,13 @@ def analizar():
     # Iterar sobre los tokens analizados
     for token in lexer:
         tokens_analizados.append({'valor': token.value, 'tipo': token.type})
-
+    print(tokens_analizados)
     return jsonify(tokens_analizados)
 
 
 @app.route('/analizarSintactico', methods=['POST'])
 def analizar_sintactico():
+    print('estas en analisis sintactico')
     global syntax_error_token
     syntax_error_token = None
 
@@ -218,10 +211,10 @@ def analizar_sintactico():
     result = parser.parse(datos_recibidos)
 
     if result == "Correcto":
-        return jsonify({'resultado': 'La estructura for es correcta'})
+        return jsonify({'resultado': 'Operación Encontrada con Exito'})
     else:
         error_info = {
-            'resultado': 'Error en la estructura for',
+            'resultado': 'Error! Operación no encontrada',
             'token': syntax_error_token.value if syntax_error_token else None,
             'posicion': syntax_error_token.lexpos if syntax_error_token else None
         }
@@ -235,5 +228,21 @@ def analizar_semantico_route():
     return jsonify({'resultado': resultado})
 
 
+@socketio.on('execute_command')
+def handle_execute_command(json):
+    command = json['data']
+    try:
+        result = subprocess.run(command, shell=True,
+                                capture_output=True, text=True)
+        output = result.stdout + result.stderr
+    except Exception as e:
+        output = str(e)
+
+    emit('command_output', {'data': output})
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port=8081)
+    socketio.run(app, debug=True, port=8082)
+
+# if __name__ == '__main__':
+#     app.run(debug=True, port=8081)

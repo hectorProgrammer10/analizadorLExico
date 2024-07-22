@@ -5,70 +5,45 @@ Unused terminals:
     CHAR
     FLOAT
     INT
-    STRING
 
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> declaration for_loop
-Rule 2     program -> for_loop
-Rule 3     declaration -> tipo ID SEMICOLON
-Rule 4     for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
-Rule 5     for_initialization -> tipo ID EQ DIGITO
-Rule 6     for_initialization -> ID EQ DIGITO
-Rule 7     for_condition -> ID LEQ DIGITO
-Rule 8     for_increment -> ID PLUS
-Rule 9     tipo -> RESERVADA
-Rule 10    statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON
+Rule 1     program -> RESERVADA
+Rule 2     program -> RESERVADA comando
+Rule 3     comando -> MNUS ID
+Rule 4     comando -> SL ID SL ID
+Rule 5     comando -> DOT DOT
+Rule 6     comando -> MNUS MNUS ID
 
 Terminals, with rules where they appear
 
 CHAR                 : 
-DIGITO               : 5 6 7
-DOT                  : 10 10
-EQ                   : 5 6
+DOT                  : 5 5
 FLOAT                : 
-ID                   : 3 5 6 7 8 10
+ID                   : 3 4 4 6
 INT                  : 
-LBRACE               : 4
-LEQ                  : 7
-LPAREN               : 4 10
-PLUS                 : 8
-RBRACE               : 4
-RESERVADA            : 4 9 10 10 10
-RPAREN               : 4 10
-SEMICOLON            : 3 4 4 10
-STRING               : 
+MNUS                 : 3 6 6
+RESERVADA            : 1 2
+SL                   : 4 4
 error                : 
 
 Nonterminals, with rules where they appear
 
-declaration          : 1
-for_condition        : 4
-for_increment        : 4
-for_initialization   : 4
-for_loop             : 1 2
+comando              : 2
 program              : 0
-statement            : 4
-tipo                 : 3 5
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (1) program -> . declaration for_loop
-    (2) program -> . for_loop
-    (3) declaration -> . tipo ID SEMICOLON
-    (4) for_loop -> . RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
-    (9) tipo -> . RESERVADA
+    (1) program -> . RESERVADA
+    (2) program -> . RESERVADA comando
 
-    RESERVADA       shift and go to state 5
+    RESERVADA       shift and go to state 2
 
     program                        shift and go to state 1
-    declaration                    shift and go to state 2
-    for_loop                       shift and go to state 3
-    tipo                           shift and go to state 4
 
 state 1
 
@@ -78,296 +53,95 @@ state 1
 
 state 2
 
-    (1) program -> declaration . for_loop
-    (4) for_loop -> . RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
+    (1) program -> RESERVADA .
+    (2) program -> RESERVADA . comando
+    (3) comando -> . MNUS ID
+    (4) comando -> . SL ID SL ID
+    (5) comando -> . DOT DOT
+    (6) comando -> . MNUS MNUS ID
 
-    RESERVADA       shift and go to state 7
+    $end            reduce using rule 1 (program -> RESERVADA .)
+    MNUS            shift and go to state 4
+    SL              shift and go to state 5
+    DOT             shift and go to state 6
 
-    for_loop                       shift and go to state 6
+    comando                        shift and go to state 3
 
 state 3
 
-    (2) program -> for_loop .
+    (2) program -> RESERVADA comando .
 
-    $end            reduce using rule 2 (program -> for_loop .)
+    $end            reduce using rule 2 (program -> RESERVADA comando .)
 
 
 state 4
 
-    (3) declaration -> tipo . ID SEMICOLON
+    (3) comando -> MNUS . ID
+    (6) comando -> MNUS . MNUS ID
 
     ID              shift and go to state 8
+    MNUS            shift and go to state 7
 
 
 state 5
 
-    (4) for_loop -> RESERVADA . LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
-    (9) tipo -> RESERVADA .
+    (4) comando -> SL . ID SL ID
 
-    LPAREN          shift and go to state 9
-    ID              reduce using rule 9 (tipo -> RESERVADA .)
+    ID              shift and go to state 9
 
 
 state 6
 
-    (1) program -> declaration for_loop .
+    (5) comando -> DOT . DOT
 
-    $end            reduce using rule 1 (program -> declaration for_loop .)
+    DOT             shift and go to state 10
 
 
 state 7
 
-    (4) for_loop -> RESERVADA . LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
+    (6) comando -> MNUS MNUS . ID
 
-    LPAREN          shift and go to state 9
+    ID              shift and go to state 11
 
 
 state 8
 
-    (3) declaration -> tipo ID . SEMICOLON
+    (3) comando -> MNUS ID .
 
-    SEMICOLON       shift and go to state 10
+    $end            reduce using rule 3 (comando -> MNUS ID .)
 
 
 state 9
 
-    (4) for_loop -> RESERVADA LPAREN . for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
-    (5) for_initialization -> . tipo ID EQ DIGITO
-    (6) for_initialization -> . ID EQ DIGITO
-    (9) tipo -> . RESERVADA
+    (4) comando -> SL ID . SL ID
 
-    ID              shift and go to state 14
-    RESERVADA       shift and go to state 11
+    SL              shift and go to state 12
 
-    for_initialization             shift and go to state 12
-    tipo                           shift and go to state 13
 
 state 10
 
-    (3) declaration -> tipo ID SEMICOLON .
+    (5) comando -> DOT DOT .
 
-    RESERVADA       reduce using rule 3 (declaration -> tipo ID SEMICOLON .)
+    $end            reduce using rule 5 (comando -> DOT DOT .)
 
 
 state 11
 
-    (9) tipo -> RESERVADA .
+    (6) comando -> MNUS MNUS ID .
 
-    ID              reduce using rule 9 (tipo -> RESERVADA .)
+    $end            reduce using rule 6 (comando -> MNUS MNUS ID .)
 
 
 state 12
 
-    (4) for_loop -> RESERVADA LPAREN for_initialization . SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
+    (4) comando -> SL ID SL . ID
 
-    SEMICOLON       shift and go to state 15
+    ID              shift and go to state 13
 
 
 state 13
 
-    (5) for_initialization -> tipo . ID EQ DIGITO
+    (4) comando -> SL ID SL ID .
 
-    ID              shift and go to state 16
-
-
-state 14
-
-    (6) for_initialization -> ID . EQ DIGITO
-
-    EQ              shift and go to state 17
-
-
-state 15
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON . for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE
-    (7) for_condition -> . ID LEQ DIGITO
-
-    ID              shift and go to state 19
-
-    for_condition                  shift and go to state 18
-
-state 16
-
-    (5) for_initialization -> tipo ID . EQ DIGITO
-
-    EQ              shift and go to state 20
-
-
-state 17
-
-    (6) for_initialization -> ID EQ . DIGITO
-
-    DIGITO          shift and go to state 21
-
-
-state 18
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition . SEMICOLON for_increment RPAREN LBRACE statement RBRACE
-
-    SEMICOLON       shift and go to state 22
-
-
-state 19
-
-    (7) for_condition -> ID . LEQ DIGITO
-
-    LEQ             shift and go to state 23
-
-
-state 20
-
-    (5) for_initialization -> tipo ID EQ . DIGITO
-
-    DIGITO          shift and go to state 24
-
-
-state 21
-
-    (6) for_initialization -> ID EQ DIGITO .
-
-    SEMICOLON       reduce using rule 6 (for_initialization -> ID EQ DIGITO .)
-
-
-state 22
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON . for_increment RPAREN LBRACE statement RBRACE
-    (8) for_increment -> . ID PLUS
-
-    ID              shift and go to state 26
-
-    for_increment                  shift and go to state 25
-
-state 23
-
-    (7) for_condition -> ID LEQ . DIGITO
-
-    DIGITO          shift and go to state 27
-
-
-state 24
-
-    (5) for_initialization -> tipo ID EQ DIGITO .
-
-    SEMICOLON       reduce using rule 5 (for_initialization -> tipo ID EQ DIGITO .)
-
-
-state 25
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment . RPAREN LBRACE statement RBRACE
-
-    RPAREN          shift and go to state 28
-
-
-state 26
-
-    (8) for_increment -> ID . PLUS
-
-    PLUS            shift and go to state 29
-
-
-state 27
-
-    (7) for_condition -> ID LEQ DIGITO .
-
-    SEMICOLON       reduce using rule 7 (for_condition -> ID LEQ DIGITO .)
-
-
-state 28
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN . LBRACE statement RBRACE
-
-    LBRACE          shift and go to state 30
-
-
-state 29
-
-    (8) for_increment -> ID PLUS .
-
-    RPAREN          reduce using rule 8 (for_increment -> ID PLUS .)
-
-
-state 30
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE . statement RBRACE
-    (10) statement -> . RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON
-
-    RESERVADA       shift and go to state 31
-
-    statement                      shift and go to state 32
-
-state 31
-
-    (10) statement -> RESERVADA . DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON
-
-    DOT             shift and go to state 33
-
-
-state 32
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement . RBRACE
-
-    RBRACE          shift and go to state 34
-
-
-state 33
-
-    (10) statement -> RESERVADA DOT . RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON
-
-    RESERVADA       shift and go to state 35
-
-
-state 34
-
-    (4) for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE .
-
-    $end            reduce using rule 4 (for_loop -> RESERVADA LPAREN for_initialization SEMICOLON for_condition SEMICOLON for_increment RPAREN LBRACE statement RBRACE .)
-
-
-state 35
-
-    (10) statement -> RESERVADA DOT RESERVADA . DOT RESERVADA LPAREN ID RPAREN SEMICOLON
-
-    DOT             shift and go to state 36
-
-
-state 36
-
-    (10) statement -> RESERVADA DOT RESERVADA DOT . RESERVADA LPAREN ID RPAREN SEMICOLON
-
-    RESERVADA       shift and go to state 37
-
-
-state 37
-
-    (10) statement -> RESERVADA DOT RESERVADA DOT RESERVADA . LPAREN ID RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 38
-
-
-state 38
-
-    (10) statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN . ID RPAREN SEMICOLON
-
-    ID              shift and go to state 39
-
-
-state 39
-
-    (10) statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 40
-
-
-state 40
-
-    (10) statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 41
-
-
-state 41
-
-    (10) statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON .
-
-    RBRACE          reduce using rule 10 (statement -> RESERVADA DOT RESERVADA DOT RESERVADA LPAREN ID RPAREN SEMICOLON .)
+    $end            reduce using rule 4 (comando -> SL ID SL ID .)
 

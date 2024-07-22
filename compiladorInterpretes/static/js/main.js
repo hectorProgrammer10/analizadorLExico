@@ -1,5 +1,8 @@
+////
+
 let contenedor = [];
 function analizar() {
+  executeCommand();
   let codigo = document.getElementById("codigo").value;
 
   let objetoLexico = {
@@ -27,8 +30,11 @@ function analizar() {
     },
   });
   imprimir(contenedor);
+  analisisSintactico();
 }
-
+let exampleAnterior = "-";
+let examplesG = "";
+let examplesS = "";
 function imprimir(resultado) {
   let div = document.getElementById("resultado");
   let filas = " ";
@@ -37,6 +43,7 @@ function imprimir(resultado) {
   let contadorParen = 0;
   let contadorSim = 0;
   let contadorError = 0;
+  toggleExamples(exampleAnterior);
   contenedor.forEach(function (obj) {
     let datostabla = {
       pr: " ",
@@ -52,7 +59,13 @@ function imprimir(resultado) {
       datostabla.id = "X";
       contadorID = contadorID + 1;
       datostabla.cad = contadorID;
+      exampleAnterior = "-";
     } else if (obj.tipo == "RESERVADA") {
+      examplesG = obj.valor;
+      examplesS = `examples-${examplesG}`;
+      exampleAnterior = examplesS;
+
+      toggleExamples(examplesS);
       datostabla.pr = "X";
       contadorReservada = contadorReservada + 1;
       datostabla.cad = contadorReservada;
@@ -128,11 +141,15 @@ function analisisSintactico() {
 }
 
 function imprimirSintactico(resultado) {
+  let resultadoSemantico = document.getElementById("resultadoSemantico");
   let resultadoSintactico = document.getElementById("resultadoSintactico");
   if (resultado.resultado == "Error en la estructura for") {
     resultadoSintactico.innerHTML = `${resultado.resultado}<br>posicion : ${resultado.posicion}<br>token : ' ${resultado.token} '`;
   } else {
     resultadoSintactico.innerHTML = `${resultado.resultado}`;
+    if (resultado.resultado == "Error! Operación no encontrada") {
+      resultadoSemantico.innerHTML = " ";
+    }
   }
 }
 
@@ -159,3 +176,30 @@ function imprimirSemantico(resultado) {
   let resultadoS = document.getElementById("resultadoSemantico");
   resultadoS.innerHTML = `${resultado.resultado}`;
 }
+function toggleExamples(id) {
+  if (id == "-") {
+    console.log(" ");
+  } else {
+    var examples = document.getElementById(id);
+    if (examples.style.display === "none" || examples.style.display === "") {
+      examples.style.display = "block";
+    } else {
+      examples.style.display = "none";
+    }
+  }
+}
+
+var socket = io();
+
+function executeCommand() {
+  var command = document.getElementById("codigo").value;
+  console.log(command);
+  socket.emit("execute_command", { data: command });
+}
+
+socket.on("command_output", function (msg) {
+  var outputDiv = document.getElementById("resultadoSemantico");
+  outputDiv.innerHTML = " ";
+  outputDiv.innerHTML += msg.data + "<br>";
+  outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to bottom
+});

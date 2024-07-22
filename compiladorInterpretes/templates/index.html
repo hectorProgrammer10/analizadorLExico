@@ -9,22 +9,23 @@
       href="{{url_for('static', filename='styles.css')}}"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <title>Ubuntu</title>
   </head>
   <body>
     <div class="canva borde box">
       <div class="top">
-        <div class="seccion borde">
+        <div class="seccion bordeW box2">
           <textarea
             class="fondoCodigo"
             id="codigo"
             rows="25"
             cols="70"
-            placeholder="texto ..."
+            placeholder="../"
           ></textarea>
         </div>
-        <div class="seccion borde fondoCodigo">
+        <div class="seccion bordeW box2 fondoCodigo">
           <div id="resultado"></div>
         </div>
       </div>
@@ -32,37 +33,104 @@
       <div class="bottom">
         <div class="buttons">
           <div class="btns borde">
-            <button id="btnAnalisis" class="borde" onclick="analizar()">
-              Análisis Léxico
+            <button id="btnAnalisis" class="bordeW" onclick="analizar()">
+              Ejecutar
             </button>
-            <button id="btnBorrar" class="borde" onclick="borrar()">
+            <button id="btnBorrar" class="bordeW" onclick="borrar()">
               Borrar
             </button>
           </div>
-          <div class="btns">
-            <button
-              id="btnSintactico"
-              class="borde btnAnalisis"
-              onclick="analisisSintactico()"
-            >
-              Análisis Sintactico
-            </button>
-            <button
-              id="btnSemantico"
-              class="borde btnAnalisis"
-              onclick="analisisSemantico()"
-            >
-              Análisis Semantico
-            </button>
-          </div>
         </div>
-        <div class="seccion borde fondoCodigo">
-          <div id="resultadoSintactico"></div>
+        <div class="seccion fondoCodigo bordeW box2 resultadoSintactico">
+          <div id="resultadoSintactico" class=""></div>
         </div>
       </div>
       <div class="seccion2 borde fondoCodigo">
-        <div id="resultadoSemantico"></div>
+        <div id="resultadoSemantico" class="bordeW"></div>
+      </div>
+      <div class="save">
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-cd')">cd</button>
+          <div id="examples-cd" class="examples">
+            <p>cd /home/user</p>
+            <p>cd ..</p>
+            <p>cd /var/log</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-ls')">ls</button>
+          <div id="examples-ls" class="examples">
+            <p>ls -l</p>
+            <p>ls -a</p>
+            <p>ls /home/user</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-pwd')">pwd</button>
+          <div id="examples-pwd" class="examples">
+            <p>pwd</p>
+            <p>pwd -P</p>
+            <p>pwd --help</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-mkdir')">mkdir</button>
+          <div id="examples-mkdir" class="examples">
+            <p>mkdir new_folder</p>
+            <p>mkdir -p /new/folder</p>
+            <p>mkdir folder1 folder2</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-rm')">rm</button>
+          <div id="examples-rm" class="examples">
+            <p>rm file.txt</p>
+            <p>rm -r folder</p>
+            <p>rm -f file.txt</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-cp')">cp</button>
+          <div id="examples-cp" class="examples">
+            <p>cp file1 file2</p>
+            <p>cp -r dir1 dir2</p>
+            <p>cp file.txt /home/user</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-mv')">mv</button>
+          <div id="examples-mv" class="examples">
+            <p>mv file1 file2</p>
+            <p>mv file.txt /home/user</p>
+            <p>mv dir1 dir2</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-touch')">touch</button>
+          <div id="examples-touch" class="examples">
+            <p>touch file.txt</p>
+            <p>touch -a file.txt</p>
+            <p>touch -m file.txt</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-cat')">cat</button>
+          <div id="examples-cat" class="examples">
+            <p>cat file.txt</p>
+            <p>cat file1 file2</p>
+            <p>cat /var/log/syslog</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <button onclick="toggleExamples('examples-echo')">echo</button>
+          <div id="examples-echo" class="examples">
+            <p>echo 'Hello, World!'</p>
+            <p>echo $HOME</p>
+            <p>echo $(date)</p>
+          </div>
+        </div>
       </div>
     </div>
+    <script></script>
   </body>
 </html>
