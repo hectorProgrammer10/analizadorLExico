@@ -10,16 +10,16 @@ socketio = SocketIO(app)
 
 # Lista de palabras reservadas y tipos
 reserved = {
-    'cd': 'RESERVADA',
-    'ls': 'RESERVADA',
-    'pwd': 'RESERVADA',
-    'mkdir': 'RESERVADA',
-    'rm': 'RESERVADA',
-    'cp': 'RESERVADA',
-    'mv': 'RESERVADA',
-    'touch': 'RESERVADA',
-    'cat': 'RESERVADA',
-    'echo': 'RESERVADA',
+    'cd': 'CD',
+    'ls': 'LS',
+    'pwd': 'PWD',
+    'mkdir': 'MKDIR',
+    'rm': 'RM',
+    'cp': 'CP',
+    'mv': 'MV',
+    'touch': 'TOUCH',
+    'cat': 'CAT',
+    'echo': 'ECHO',
 }
 
 # Lista de tipos de datos
@@ -33,7 +33,9 @@ types = {
 tokens = [
     'MNUS',  # (
     'SL',
-    # 'RPAREN',  # )
+    'MY',
+    'RPAREN',  # )
+    'LPAREN',
     # 'LBRACE',  # {
     # 'RBRACE',  # }
     # 'SEMICOLON',  # ;
@@ -41,15 +43,27 @@ tokens = [
     # 'EQ',  # =
     # 'LEQ',  # <=
     'DOT',  # .
-    # 'STRING',  # "..."
+    'STRING',  # "..."
     'ID',  # Identificadores
     # 'DIGITO'
+    'CD',
+    'LS',
+    'PWD',
+    'MKDIR',
+    'RM',
+    'CP',
+    'MV',
+    'TOUCH',
+    'CAT',
+    'ECHO',
 ] + list(reserved.values()) + list(types.values())
 
 # Expresiones regulares para tokens simples
 t_MNUS = r'\-'
 t_SL = r'\/'
-# t_RPAREN = r'\)'
+t_MY = r'\$'
+t_RPAREN = r'\)'
+t_LPAREN = r'\('
 # t_LBRACE = r'\{'
 # t_RBRACE = r'\}'
 # t_SEMICOLON = r';'
@@ -57,7 +71,7 @@ t_SL = r'\/'
 # t_EQ = r'='
 # t_LEQ = r'<='
 t_DOT = r'\.'
-# t_STRING = r'\".*?\"'
+t_STRING = r'\'.*?\''
 
 
 def t_DIGITO(t):
@@ -96,16 +110,90 @@ lexer = lex.lex()
 
 
 def p_program(p):
-    '''program : RESERVADA
-               | RESERVADA comando'''
+    '''program : CD
+               | CD comandoCd
+               | LS
+               | LS comandoLs
+               | PWD
+               | PWD comandoPwd
+               | MKDIR
+               | MKDIR comandoMkdir
+               | RM
+               | RM comandoRm
+               | CP
+               | CP comandoCp
+               | MV comandoMv
+               | TOUCH
+               | TOUCH comandoTouch
+               | CAT
+               | CAT comandoCat
+               | ECHO
+               | ECHO comandoEcho'''
     p[0] = "Correcto"
 
 
-def p_comando(p):
-    '''comando : MNUS ID
-               | SL ID SL ID
-               | DOT DOT
-               | MNUS MNUS ID'''
+def p_comandoLs(p):
+    '''comandoLs : MNUS ID
+               | SL ID SL ID'''
+    p[0] = "correcto"
+
+
+def p_comandoCd(p):
+    '''comandoCd : SL ID SL ID
+                 | DOT DOT'''
+    p[0] = "correcto"
+
+
+def p_comandoPwd(p):
+    '''comandoPwd : MNUS ID
+                 | MNUS MNUS ID'''
+    p[0] = "correcto"
+
+
+def p_comandoMkdir(p):
+    '''comandoMkdir : ID
+                 | MNUS ID SL ID SL ID
+                 | ID ID'''
+    p[0] = "correcto"
+
+
+def p_comandoRm(p):
+    '''comandoRm : ID DOT ID
+                 | MNUS ID ID
+                 | DOT DOT'''
+    p[0] = "correcto"
+
+
+def p_comandoCp(p):
+    '''comandoCp : ID ID
+                 | MNUS ID ID ID
+                 | ID DOT ID SL ID SL ID'''
+    p[0] = "correcto"
+
+
+def p_comandoMv(p):
+    '''comandoMv : ID ID
+                 | ID DOT ID SL ID SL ID'''
+    p[0] = "correcto"
+
+
+def p_comandoTouch(p):
+    '''comandoTouch : ID DOT ID
+                 | MNUS ID ID DOT ID'''
+    p[0] = "correcto"
+
+
+def p_comandoCat(p):
+    '''comandoCat : ID DOT ID
+                 | ID ID
+                 | SL ID SL ID SL ID'''
+    p[0] = "correcto"
+
+
+def p_comandoEcho(p):
+    '''comandoEcho : STRING
+                 | MY ID
+                 | MY LPAREN ID RPAREN'''
     p[0] = "correcto"
 
 

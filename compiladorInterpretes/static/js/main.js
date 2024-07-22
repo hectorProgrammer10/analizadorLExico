@@ -60,11 +60,22 @@ function imprimir(resultado) {
       contadorID = contadorID + 1;
       datostabla.cad = contadorID;
       exampleAnterior = "-";
-    } else if (obj.tipo == "RESERVADA") {
+    } else if (
+      obj.tipo == "CD" ||
+      obj.tipo == "LS" ||
+      obj.tipo == "PWD" ||
+      obj.tipo == "MKDIR" ||
+      obj.tipo == "RM" ||
+      obj.tipo == "CP" ||
+      obj.tipo == "MV" ||
+      obj.tipo == "TOUCH" ||
+      obj.tipo == "CAT" ||
+      obj.tipo == "ECHO"
+    ) {
       examplesG = obj.valor;
       examplesS = `examples-${examplesG}`;
       exampleAnterior = examplesS;
-
+      // console.log(`${obj.valor} oooo`);
       toggleExamples(examplesS);
       datostabla.pr = "X";
       contadorReservada = contadorReservada + 1;
@@ -73,7 +84,12 @@ function imprimir(resultado) {
       datostabla.tipo = "PAREN";
       contadorParen = contadorParen + 1;
       datostabla.cad = contadorParen;
-    } else if (obj.tipo == "SIM") {
+    } else if (
+      obj.tipo == "MNUS" ||
+      obj.tipo == "SL" ||
+      obj.tipo == "MY" ||
+      obj.tipo == "DOT"
+    ) {
       datostabla.sim = "X";
       contadorSim = contadorSim + 1;
       datostabla.cad = contadorSim;

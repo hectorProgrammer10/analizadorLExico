@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CHAR DOT FLOAT ID INT MNUS RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA RESERVADA SLprogram : RESERVADA\n               | RESERVADA comandocomando : MNUS ID\n               | SL ID SL ID\n               | DOT DOT\n               | MNUS MNUS ID'
+_lr_signature = 'CAT CAT CD CD CHAR CP CP DOT ECHO ECHO FLOAT ID INT LPAREN LS LS MKDIR MKDIR MNUS MV MV MY PWD PWD RM RM RPAREN SL STRING TOUCH TOUCHprogram : CD\n               | CD comandoCd\n               | LS\n               | LS comandoLs\n               | PWD\n               | PWD comandoPwd\n               | MKDIR\n               | MKDIR comandoMkdir\n               | RM\n               | RM comandoRm\n               | CP\n               | CP comandoCp\n               | MV comandoMv\n               | TOUCH\n               | TOUCH comandoTouch\n               | CAT\n               | CAT comandoCat\n               | ECHO\n               | ECHO comandoEchocomandoLs : MNUS ID\n               | SL ID SL IDcomandoCd : SL ID SL ID\n                 | DOT DOTcomandoPwd : MNUS ID\n                 | MNUS MNUS IDcomandoMkdir : ID\n                 | MNUS ID SL ID SL ID\n                 | ID IDcomandoRm : ID DOT ID\n                 | MNUS ID ID\n                 | DOT DOTcomandoCp : ID ID\n                 | MNUS ID ID ID\n                 | ID DOT ID SL ID SL IDcomandoMv : ID ID\n                 | ID DOT ID SL ID SL IDcomandoTouch : ID DOT ID\n                 | MNUS ID ID DOT IDcomandoCat : ID DOT ID\n                 | ID ID\n                 | SL ID SL ID SL IDcomandoEcho : STRING\n                 | MY ID\n                 | MY LPAREN ID RPAREN'
     
-_lr_action_items = {'RESERVADA':([0,],[2,]),'$end':([1,2,3,8,10,11,13,],[0,-1,-2,-3,-5,-6,-4,]),'MNUS':([2,4,],[4,7,]),'SL':([2,9,],[5,12,]),'DOT':([2,6,],[6,10,]),'ID':([4,5,7,12,],[8,9,11,13,]),}
+_lr_action_items = {'CD':([0,],[2,]),'LS':([0,],[3,]),'PWD':([0,],[4,]),'MKDIR':([0,],[5,]),'RM':([0,],[6,]),'CP':([0,],[7,]),'MV':([0,],[8,]),'TOUCH':([0,],[9,]),'CAT':([0,],[10,]),'ECHO':([0,],[11,]),'$end':([1,2,3,4,5,6,7,9,10,11,12,15,18,20,21,23,27,30,32,35,38,39,42,43,46,47,50,52,55,59,62,66,68,69,73,75,78,79,82,86,90,92,95,96,97,],[0,-1,-3,-5,-7,-9,-11,-14,-16,-18,-2,-4,-6,-8,-26,-10,-12,-13,-15,-17,-19,-42,-23,-20,-24,-28,-31,-32,-35,-40,-43,-25,-29,-30,-37,-39,-22,-21,-33,-44,-38,-27,-41,-34,-36,]),'SL':([2,3,10,41,44,48,61,70,72,80,85,88,89,],[13,17,37,64,65,67,76,81,83,87,91,93,94,]),'DOT':([2,6,14,24,25,28,31,33,36,74,],[14,25,42,49,50,53,56,57,60,84,]),'MNUS':([3,4,5,6,7,9,19,],[16,19,22,26,29,34,45,]),'ID':([5,6,7,8,9,10,13,16,17,19,21,22,26,28,29,31,34,36,37,40,45,49,51,53,54,56,57,58,60,63,64,65,67,71,76,81,83,84,87,91,93,94,],[21,24,28,31,33,36,41,43,44,46,47,48,51,52,54,55,58,59,61,62,66,68,69,70,71,72,73,74,75,77,78,79,80,82,85,88,89,90,92,95,96,97,]),'STRING':([11,],[39,]),'MY':([11,],[40,]),'LPAREN':([40,],[63,]),'RPAREN':([77,],[86,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'comando':([2,],[3,]),}
+_lr_goto_items = {'program':([0,],[1,]),'comandoCd':([2,],[12,]),'comandoLs':([3,],[15,]),'comandoPwd':([4,],[18,]),'comandoMkdir':([5,],[20,]),'comandoRm':([6,],[23,]),'comandoCp':([7,],[27,]),'comandoMv':([8,],[30,]),'comandoTouch':([9,],[32,]),'comandoCat':([10,],[35,]),'comandoEcho':([11,],[38,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,10 +27,48 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> RESERVADA','program',1,'p_program','app.py',99),
-  ('program -> RESERVADA comando','program',2,'p_program','app.py',100),
-  ('comando -> MNUS ID','comando',2,'p_comando','app.py',105),
-  ('comando -> SL ID SL ID','comando',4,'p_comando','app.py',106),
-  ('comando -> DOT DOT','comando',2,'p_comando','app.py',107),
-  ('comando -> MNUS MNUS ID','comando',3,'p_comando','app.py',108),
+  ('program -> CD','program',1,'p_program','app.py',113),
+  ('program -> CD comandoCd','program',2,'p_program','app.py',114),
+  ('program -> LS','program',1,'p_program','app.py',115),
+  ('program -> LS comandoLs','program',2,'p_program','app.py',116),
+  ('program -> PWD','program',1,'p_program','app.py',117),
+  ('program -> PWD comandoPwd','program',2,'p_program','app.py',118),
+  ('program -> MKDIR','program',1,'p_program','app.py',119),
+  ('program -> MKDIR comandoMkdir','program',2,'p_program','app.py',120),
+  ('program -> RM','program',1,'p_program','app.py',121),
+  ('program -> RM comandoRm','program',2,'p_program','app.py',122),
+  ('program -> CP','program',1,'p_program','app.py',123),
+  ('program -> CP comandoCp','program',2,'p_program','app.py',124),
+  ('program -> MV comandoMv','program',2,'p_program','app.py',125),
+  ('program -> TOUCH','program',1,'p_program','app.py',126),
+  ('program -> TOUCH comandoTouch','program',2,'p_program','app.py',127),
+  ('program -> CAT','program',1,'p_program','app.py',128),
+  ('program -> CAT comandoCat','program',2,'p_program','app.py',129),
+  ('program -> ECHO','program',1,'p_program','app.py',130),
+  ('program -> ECHO comandoEcho','program',2,'p_program','app.py',131),
+  ('comandoLs -> MNUS ID','comandoLs',2,'p_comandoLs','app.py',136),
+  ('comandoLs -> SL ID SL ID','comandoLs',4,'p_comandoLs','app.py',137),
+  ('comandoCd -> SL ID SL ID','comandoCd',4,'p_comandoCd','app.py',142),
+  ('comandoCd -> DOT DOT','comandoCd',2,'p_comandoCd','app.py',143),
+  ('comandoPwd -> MNUS ID','comandoPwd',2,'p_comandoPwd','app.py',148),
+  ('comandoPwd -> MNUS MNUS ID','comandoPwd',3,'p_comandoPwd','app.py',149),
+  ('comandoMkdir -> ID','comandoMkdir',1,'p_comandoMkdir','app.py',154),
+  ('comandoMkdir -> MNUS ID SL ID SL ID','comandoMkdir',6,'p_comandoMkdir','app.py',155),
+  ('comandoMkdir -> ID ID','comandoMkdir',2,'p_comandoMkdir','app.py',156),
+  ('comandoRm -> ID DOT ID','comandoRm',3,'p_comandoRm','app.py',161),
+  ('comandoRm -> MNUS ID ID','comandoRm',3,'p_comandoRm','app.py',162),
+  ('comandoRm -> DOT DOT','comandoRm',2,'p_comandoRm','app.py',163),
+  ('comandoCp -> ID ID','comandoCp',2,'p_comandoCp','app.py',168),
+  ('comandoCp -> MNUS ID ID ID','comandoCp',4,'p_comandoCp','app.py',169),
+  ('comandoCp -> ID DOT ID SL ID SL ID','comandoCp',7,'p_comandoCp','app.py',170),
+  ('comandoMv -> ID ID','comandoMv',2,'p_comandoMv','app.py',175),
+  ('comandoMv -> ID DOT ID SL ID SL ID','comandoMv',7,'p_comandoMv','app.py',176),
+  ('comandoTouch -> ID DOT ID','comandoTouch',3,'p_comandoTouch','app.py',181),
+  ('comandoTouch -> MNUS ID ID DOT ID','comandoTouch',5,'p_comandoTouch','app.py',182),
+  ('comandoCat -> ID DOT ID','comandoCat',3,'p_comandoCat','app.py',187),
+  ('comandoCat -> ID ID','comandoCat',2,'p_comandoCat','app.py',188),
+  ('comandoCat -> SL ID SL ID SL ID','comandoCat',6,'p_comandoCat','app.py',189),
+  ('comandoEcho -> STRING','comandoEcho',1,'p_comandoEcho','app.py',194),
+  ('comandoEcho -> MY ID','comandoEcho',2,'p_comandoEcho','app.py',195),
+  ('comandoEcho -> MY LPAREN ID RPAREN','comandoEcho',4,'p_comandoEcho','app.py',196),
 ]
